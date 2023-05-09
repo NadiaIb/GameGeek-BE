@@ -26,5 +26,5 @@ describe("/api/categories", () => {
           expect(typeof category.description).toBe("string");
         });
       });
-  });
+  });    
 });
