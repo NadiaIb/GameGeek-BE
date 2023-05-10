@@ -1,15 +1,10 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const { getCategories } = require('./controllers/games.controllers');
+const {
+  getCategories,
+} = require("./controllers/games.controllers");
 
-app.get('/api/categories', getCategories);
-
-app.use((err,req,res,next) => {
-    console.log(err);
-    res.status(500).send("Server Error!")
-})
+app.get("/api/categories", getCategories);
 
 module.exports = app;
-
-
 
