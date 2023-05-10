@@ -29,11 +29,8 @@ describe("/api/categories", () => {
       .expect(200)
       .then((response) => {
         expect(response.body.category.length).toBe(4);
-        expect(typeof response.body).toEqual("object");
         const categories = response.body.category;
         categories.forEach((category) => {
-          expect(categories).hasOwnProperty("slug");
-          expect(categories).hasOwnProperty("description");
           expect(typeof category.slug).toBe("string");
           expect(typeof category.description).toBe("string");
         });
