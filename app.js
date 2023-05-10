@@ -2,14 +2,10 @@ const express = require("express");
 const app = express();
 const {
   getCategories,
-  getReviews,
+  getEndpoints
 } = require("./controllers/games.controllers");
 
-app.get("/api", (req, res)=>{
-    fs.readFile("/endpoints.json", "utf8", function (err, data){
-        if (err) throw err;   console.log(data); 
-    })
-})
+app.get("/api", getEndpoints)
 
 app.get("/api/categories", getCategories);
 
