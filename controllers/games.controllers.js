@@ -1,4 +1,8 @@
+const endpoints= require('../endpoints.json')
 const { selectCategories, selectReviewId } = require("../models/games.models");
+exports.getEndpoints = (req, res) => {
+    res.status(200).send({ endpoints: endpoints });
+  };
 
 exports.getCategories = (req, res, next) => {
   selectCategories()
@@ -20,3 +24,4 @@ exports.getReviewId  = (req, res, next) => {
     next(err)
   })
 }
+
