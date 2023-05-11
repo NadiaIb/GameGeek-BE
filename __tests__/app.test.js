@@ -29,34 +29,39 @@ describe("/api/categories", () => {
   });
 });
 
-describe.only("/api/reviews/:review_id", () => {
+describe("/api/reviews/:review_id", () => {
   test("GET - status:200 - return review object with id ", () => {
-    const reviewId = 6;
     return request(app)
-      .get(`/api/reviews/${reviewId}`)
-      .set("review_id", reviewId)
+      .get(`/api/reviews/1`)
       .expect(200)
       .then((response) => {
-        expect(typeof response.body).toEqual("object");
         expect(typeof response.body.review).toEqual("object");
         const review = response.body.review;
-        expect(typeof review.review_id).toBe("number");
-        expect(typeof review.title).toBe("string");
-        expect(typeof review.review_body).toBe("string");
-        expect(typeof review.designer).toBe("string");
-        expect(typeof review.review_img_url).toBe("string");
-        expect(typeof review.votes).toBe("number");
-        expect(typeof review.category).toBe("string");
-        expect(typeof review.owner).toBe("string");
-        expect(typeof review.created_at).toBe("string");
+        expect(review.review_id).toBe(1);
+        expect(review.title).toBe('Agricola');
+        expect(review.review_body).toBe('Farmyard fun!');
+        expect(review.designer).toBe('Uwe Rosenberg');
+        expect(review.review_img_url).toBe('https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?w=700&h=700');
+        expect(review.votes).toBe(1);
+        expect(review.category).toBe('euro game');
+        expect(review.owner).toBe('mallionaire');
+        expect(review.created_at).toBe("2021-01-18T10:00:20.514Z");
+      });
+    });
+  test("GET -status:400 - invalid review ID ", () => {
+    return request(app)
+      .get("/api/reviews/random")
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).toBe("Bad Request")
       });
   });
-  // test("GET -status:400 - invalid review ID ", () => {
-  //   return request(app)
-  //     .get("/api/reviews/random")
-  //     .expect(404)
-  //     .then((response) => {
-  //       expect(response.msg).toBe("Invalid Endpoint")
-  //     });
-  // });
+  test("GET -status:404 - valid ID but non-existent review ID", () => {
+    return request(app)
+    .get("/api/reviews/1200")
+    .expect(404)
+    .then((response)=>{
+      expect(response.body.msg).toBe("not found")
+    })
+  });
 });
