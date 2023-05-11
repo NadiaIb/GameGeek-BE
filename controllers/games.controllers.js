@@ -1,4 +1,4 @@
-const { selectCategories } = require("../models/games.models");
+const { selectCategories, selectReviewId } = require("../models/games.models");
 
 exports.getCategories = (req, res, next) => {
   selectCategories()
@@ -9,3 +9,14 @@ exports.getCategories = (req, res, next) => {
       next(err);
     });
 };
+
+exports.getReviewId  = (req, res, next) => {
+  const review_id = req.params.review_id
+  selectReviewId(review_id)
+  .then((review)=>{
+    res.status(200).send({ review: review})
+  })
+  .catch((err)=>{
+    next(err)
+  })
+}
