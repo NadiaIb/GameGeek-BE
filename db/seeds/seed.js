@@ -8,7 +8,7 @@ const {
 
 const seed = ({ categoryData, commentData, reviewData, userData }) => {
   return db
-    .query(`DROP TABLE IF EXISTS comments;`)
+.query(`DROP TABLE IF EXISTS comments;`)
     .then(() => {
       return db.query(`DROP TABLE IF EXISTS reviews;`);
     })
