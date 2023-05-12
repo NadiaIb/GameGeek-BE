@@ -3,17 +3,13 @@ const app = require("../app");
 const connection = require("../db/connection");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data");
-
 const endpoints= require('../endpoints.json')
-
-
 
 beforeEach(() => {
   return seed(testData);
 });
 
 afterAll(() => connection.end());
-
 
 describe("/api", () => {
   test("GET - status:200 - returns JSON with available endpoints ", () => {
@@ -26,8 +22,6 @@ describe("/api", () => {
     });
 });
 
-
-
 describe("/api/categories", () => {
   test("GET - status:200 - return an array of category objects with slug and description properties ", () => {
     return request(app)
@@ -35,7 +29,6 @@ describe("/api/categories", () => {
       .expect(200)
       .then((response) => {
         expect(response.body.category.length).toBe(4);
-
         expect(typeof response.body).toEqual("object");
         const categories = response.body.category;
         categories.forEach((category) => {
@@ -81,6 +74,42 @@ describe("/api/reviews/:review_id", () => {
     .expect(404)
     .then((response)=>{
       expect(response.body.msg).toBe("not found")
+    })
+  });
+});
+
+describe('/api/reviews', () => {
+  test('GET - status:200 - array of review objects ', () => {
+    return request(app)
+    .get("/api/reviews")
+    .expect(200)
+    .then((response)=>{
+      expect(response.body.review.length).toBe(13)
+      expect(typeof response.body).toEqual('object')
+      const reviews = response.body.review;
+      reviews.forEach((review)=>{
+        expect(typeof review.review_id).toBe('number')
+        expect(typeof review.title).toBe('string');
+        expect(typeof review.designer).toBe('string');
+        expect(typeof review.review_img_url).toBe('string');
+        expect(typeof review.votes).toBe('number');
+        expect(typeof review.category).toBe('string');
+        expect(typeof review.owner).toBe('string');
+        expect(typeof review.created_at).toBe('string')
+        expect(typeof review.comment_count).toBe('number');;
+      })
+    })
+  });
+});
+
+describe("/api/reviews", () => {
+  test('"GET - status:200 - sort by "created_at" with a "sort_by" query, in descending order by default', () => {
+    return request(app)
+    .get("/api/reviews")
+    .expect(200)
+    .then((response) => {
+      const reviews= response.body.review
+      expect(reviews).toBeSortedBy("created_at", {descending: true})
     })
   });
 });
