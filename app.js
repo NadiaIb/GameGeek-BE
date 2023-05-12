@@ -4,7 +4,8 @@ const {
   getCategories,
   getEndpoints,
   getReviewId,
-  getReviews
+  getReviews,
+  getComments
 } = require("./controllers/games.controllers");
 
 app.get("/api", getEndpoints)
@@ -14,6 +15,8 @@ app.get("/api/categories", getCategories);
 app.get("/api/reviews/:review_id", getReviewId);
 
 app.get("/api/reviews", getReviews)
+
+app.get("/api/reviews/:review_id/comments", getComments)
 
 app.use((err, req, res, next) => {
   if (err.code === "22P02") {
