@@ -1,8 +1,13 @@
-const endpoints= require('../endpoints.json')
-const { selectCategories, selectReviewId } = require("../models/games.models");
+const endpoints = require("../endpoints.json");
+const {
+  selectCategories,
+  selectReviewId,
+  selectReviews,
+} = require("../models/games.models");
+
 exports.getEndpoints = (req, res) => {
-    res.status(200).send({ endpoints: endpoints });
-  };
+  res.status(200).send({ endpoints: endpoints });
+};
 
 exports.getCategories = (req, res, next) => {
   selectCategories()
@@ -14,14 +19,24 @@ exports.getCategories = (req, res, next) => {
     });
 };
 
-exports.getReviewId  = (req, res, next) => {
-  const review_id = req.params.review_id
+exports.getReviewId = (req, res, next) => {
+  const review_id = req.params.review_id;
   selectReviewId(review_id)
-  .then((review)=>{
-    res.status(200).send({ review: review})
-  })
-  .catch((err)=>{
-    next(err)
-  })
-}
+    .then((review) => {
+      res.status(200).send({ review: review });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.getReviews = (req, res, next) => {
+  selectReviews()
+    .then((review) => {  
+      res.status(200).send({ review: review });
+    })
+    .catch((err) => {
+      next(err);
+    });
+  };
 
