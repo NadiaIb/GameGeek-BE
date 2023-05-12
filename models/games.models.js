@@ -18,10 +18,10 @@ exports.selectReviewId = (review_id) => {
     });
 };
 
-exports.selectReviews = (sort_by = "created_at DESC") => {
+exports.selectReviews = () => {
   return connection
   .query(`
-  SELECT reviews.*, COUNT(comments.comment_id) AS comment_count FROM reviews LEFT JOIN comments ON reviews.review_id = comments.review_id GROUP BY reviews.review_id ORDER BY ${sort_by};
+  SELECT reviews.*, COUNT(comments.comment_id) AS comment_count FROM reviews LEFT JOIN comments ON reviews.review_id = comments.review_id GROUP BY reviews.review_id ORDER BY created_at DESC;
   `)
   .then((result) => {
     const outputs = result.rows;
