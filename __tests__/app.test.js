@@ -143,12 +143,67 @@ describe("/api/reviews/:review_id/comments", () => {
         expect(response.body.msg).toBe("Bad Request");
       });
   });
-test("GET -status:404 - valid ID but non-existent review ID", () => {
-  return request(app)
-    .get("/api/reviews/123/comments")
-    .expect(404)
-    .then((response) => {
-      expect(response.body.msg).toBe("not found");
-    });
+  test("GET -status:404 - valid ID but non-existent review ID", () => {
+    return request(app)
+      .get("/api/reviews/123/comments")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("not found");
+      });
+  });
 });
+
+describe("/api/reviews/:review_id/comments", () => {
+  test("POST - status:201 - post a new comment with two new properties of username and body", () => {
+    const newComment = {
+      username: "bainesface",
+      body: "I don't know what to write",
+    };
+    return request(app)
+      .post("/api/reviews/1/comments")
+      .send(newComment)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.comment.review_id).toBe(1);
+        expect(body.comment.author).toBe("bainesface");
+        expect(body.comment.body).toBe("I don't know what to write");
+        expect(typeof body.comment.votes).toBe("number");
+        expect(typeof body.comment.created_at).toBe("string");
+        expect(typeof body.comment.comment_id).toBe("number");
+      });
+  });
+  test("POST -status:400 - invalid review ID ", () => {
+    return request(app)
+      .get("/api/reviews/random/comments")
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).toBe("Bad Request");
+      });
+  });
+  test("POST -status:404 - valid ID but non-existent review ID", () => {
+    return request(app)
+      .get("/api/reviews/123/comments")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("not found");
+      });
+  });
+  test("Post - status: 404 - responds with Username does not exist", () => {
+    return request(app)
+      .post("/api/reviews/1/comments")
+      .send({ username: "random123", body: "Really great!" })
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("Username not found");
+      });
+  });
+  test("Post - status: 404 - responds with missing comment", () => {
+    return request(app)
+      .post("/api/reviews/1/comments")
+      .send({ username: "mallionaire", body: "" })
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("Missing comment");
+      });
+  });
 });

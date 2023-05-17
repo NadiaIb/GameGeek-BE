@@ -47,4 +47,22 @@ exports.selectComments = (review_id) =>{
   })
 }
 
-
+exports.createComment = (author, body, review_id) => {
+  return connection
+  .query(
+    `
+    INSERT INTO comments (author, body, review_id)
+    VALUES ($1,$2,$3) 
+    RETURNING *;`,
+    [author,body,review_id]
+  )
+  .then((result)=>{
+    if (!result.rows[0]) {
+      return Promise.reject({ status: 404, msg: "not found" });
+    } if (body === "") {
+      return Promise.reject({ status: 404, msg: "Missing comment" })
+    } else {
+      return result.rows[0];
+    }
+  })
+}
