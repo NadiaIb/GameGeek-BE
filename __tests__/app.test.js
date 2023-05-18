@@ -174,7 +174,8 @@ describe("/api/reviews/:review_id/comments", () => {
   });
   test("POST -status:400 - invalid review ID ", () => {
     return request(app)
-      .get("/api/reviews/random/comments")
+      .post("/api/reviews/random/comments")
+      .send({ username: "mallionaire", body: "Really great!" })
       .expect(400)
       .then((response) => {
         expect(response.body.msg).toBe("Bad Request");
@@ -182,7 +183,8 @@ describe("/api/reviews/:review_id/comments", () => {
   });
   test("POST -status:404 - valid ID but non-existent review ID", () => {
     return request(app)
-      .get("/api/reviews/123/comments")
+      .post("/api/reviews/123/comments")
+      .send({ username: "mallionaire", body: "Really great!" })
       .expect(404)
       .then((response) => {
         expect(response.body.msg).toBe("not found");
@@ -194,7 +196,7 @@ describe("/api/reviews/:review_id/comments", () => {
       .send({ username: "random123", body: "Really great!" })
       .expect(404)
       .then((response) => {
-        expect(response.body.msg).toBe("Username not found");
+        expect(response.body.msg).toBe("not found");
       });
   });
   test("Post - status: 404 - responds with missing comment", () => {
@@ -206,4 +208,13 @@ describe("/api/reviews/:review_id/comments", () => {
         expect(response.body.msg).toBe("Missing comment");
       });
   });
+});
+test("Post - status: 404 - responds with invalid properties", () => {
+  return request(app)
+    .post("/api/reviews/1/comments")
+    .send({ random: "mallionaire", thing: "Really great!" })
+    .expect(404)
+    .then((response) => {
+      expect(response.body.msg).toBe("Invalid properties");
+    });
 });
