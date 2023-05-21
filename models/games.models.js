@@ -47,4 +47,3 @@ exports.selectComments = (review_id) =>{
   })
 }
 
-
