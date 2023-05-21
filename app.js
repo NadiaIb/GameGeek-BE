@@ -4,24 +4,25 @@ const {
   getCategories,
   getEndpoints,
   getReviewId,
-  getReviews
+  getReviews,
+  getComments,
+  postComment,
 } = require("./controllers/games.controllers");
 
-app.get("/api", getEndpoints)
+app.use(express.json());
+
+app.get("/api", getEndpoints);
 
 app.get("/api/categories", getCategories);
 
 app.get("/api/reviews/:review_id", getReviewId);
 
-app.get("/api/reviews", getReviews)
+app.get("/api/reviews", getReviews);
 
-app.use((err, req, res, next) => {
-  if (err.code === "22P02") {
-    res.status(400).send({ msg: "Bad Request" });
-  } else {
-    next(err);
-  }
-});
+app.get("/api/reviews/:review_id/comments", getComments);
+
+app.post("/api/reviews/:review_id/comments", postComment);
+
 
 app.use((err, req, res, next) => {
   if (err.status && err.msg) {
@@ -30,4 +31,22 @@ app.use((err, req, res, next) => {
     next(err);
   }
 });
+
+//PSQL err
+app.use((err, request, response, next) => {
+  if (err.code === "23503") {
+    response.status(404).send({ msg: "not found" });
+  } else if (err.code === "23502") {
+    response.status(404).send({ msg: "Invalid properties" });
+  } else if (err.code === "22P02") {
+    response.status(400).send({ msg: "Bad Request" });
+  }else {
+    next(err);
+  }
+});
+
+app.use((err, req, res) => {
+  res.status(500).send({ msg: "Internal Server Error" });
+});
+
 module.exports = app;
