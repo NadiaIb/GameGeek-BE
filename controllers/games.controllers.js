@@ -4,7 +4,8 @@ const {
   selectReviewId,
   selectReviews,
   selectComments,
-  createComment
+  createComment,
+  removeComment
 } = require("../models/games.models");
 
 exports.getEndpoints = (req, res) => {
@@ -62,7 +63,27 @@ exports.postComment = (req, res, next) => {
     res.status(201).send({ comment: comment });
   })
   .catch((err) => {
-    console.log(err)
     next(err)
   })
 };
+
+exports.deleteComment = (req,res, next) => {
+  const {comment_id} = req.params;
+  removeComment(comment_id)
+  .then((comment)=>{
+    res.status(204).send({})
+  })
+  .catch((err)=>{
+    // console.log(err)
+    next(err)
+  })
+}
+
+
+// DELETE /api/comments/:comment_id
+// Should:
+
+// delete the given comment by comment_id
+// Responds with:
+
+// status 204 and no content

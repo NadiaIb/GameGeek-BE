@@ -218,3 +218,15 @@ test("Post - status: 404 - responds with invalid properties", () => {
       expect(response.body.msg).toBe("Invalid properties");
     });
 });
+
+describe('/api/comments/:comment_id', () => {
+  test('DELETE - status:204 - delete the given comment by comment_id ', () => {
+    return request(app)
+    .delete(`/api/comments/1`)
+    .expect(204)
+    .then((response)=>{
+      expect(response.body).toEqual({})
+      expect(response.status).toBe(204);
+    })
+  });
+});

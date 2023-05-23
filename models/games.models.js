@@ -1,3 +1,4 @@
+const { response } = require("../app");
 const connection = require("../db/connection");
 const fs = require("fs/promises");
 
@@ -62,7 +63,6 @@ exports.createComment = (author, body, review_id) => {
     )
     .then((result) => {
       if (!result.rows[0]) {
-        console.log("hello ")
         return Promise.reject({ status: 404, msg: "not found" });
         } if (body === "") {
           return Promise.reject({ status: 404, msg: "Missing comment" })
@@ -71,3 +71,13 @@ exports.createComment = (author, body, review_id) => {
       }
     });
 };
+
+exports.removeComment= (comment_id) =>{
+  return connection
+  .query(`DELETE FROM comments WHERE comment_id = $1`, [comment_id]
+    )
+    .then((result) => {
+      console.log(result.rows)
+      return null;
+    });
+  }
