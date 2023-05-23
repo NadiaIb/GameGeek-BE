@@ -85,3 +85,13 @@ exports.updateVotes = (review_id, inc_votes) => {
       return result.rows[0];
     });
 };
+
+exports.removeComment= (comment_id) =>{
+  return connection
+  .query(`DELETE FROM comments WHERE comment_id = $1`, [comment_id]
+    )
+    .then((result) => {
+      return null;
+    });
+  }
+ 
