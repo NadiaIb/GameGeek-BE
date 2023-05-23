@@ -151,6 +151,14 @@ describe("/api/reviews/:review_id/comments", () => {
         expect(response.body.msg).toBe("not found");
       });
   });
+  test("GET -status:200 - valid ID returns empty array when review has no comments", () => {
+    return request(app)
+      .get("/api/reviews/1/comments")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.comments).toEqual([]);
+      });
+  });
 });
 
 describe("/api/reviews/:review_id/comments", () => {
@@ -292,7 +300,7 @@ describe("/api/reviews/:review_id", () => {
         expect(response.body.msg).toBe("Invalid properties");
       });
   });
-  test.only("PATCH - status:400- missing  properties", () => {
+  test("PATCH - status:400- missing  properties", () => {
     const newVotes = {};
     return request(app)
       .patch("/api/reviews/1")
