@@ -20,3 +20,13 @@ exports.formatComments = (comments, idLookup) => {
 		};
 	});
 };
+
+exports.checkReviewIdExists = (review_id) => {
+	return db
+	.query(`SELECT * FROM reviews WHERE review_id = $1;`, [review_id])
+	.then((result)=>{
+		if (result.rows.length === 0 && review_id){
+			return Promise.reject({status: 404, msg: "Review ID Not Found" })
+		}
+	})
+}

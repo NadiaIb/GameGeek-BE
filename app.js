@@ -7,6 +7,7 @@ const {
   getReviews,
   getComments,
   postComment,
+  patchVotes
 } = require("./controllers/games.controllers");
 
 app.use(express.json());
@@ -23,6 +24,7 @@ app.get("/api/reviews/:review_id/comments", getComments);
 
 app.post("/api/reviews/:review_id/comments", postComment);
 
+app.patch("/api/reviews/:review_id", patchVotes);
 
 app.use((err, req, res, next) => {
   if (err.status && err.msg) {

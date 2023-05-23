@@ -4,7 +4,8 @@ const {
   selectReviewId,
   selectReviews,
   selectComments,
-  createComment
+  createComment,
+  updateVotes
 } = require("../models/games.models");
 
 exports.getEndpoints = (req, res) => {
@@ -62,7 +63,20 @@ exports.postComment = (req, res, next) => {
     res.status(201).send({ comment: comment });
   })
   .catch((err) => {
-    console.log(err)
     next(err)
   })
 };
+
+exports.patchVotes =(req,res,next)=>{
+  const review_id= req.params.review_id
+  const inc_votes = req.body.inc_votes
+  updateVotes(review_id, inc_votes)
+  .then((review)=>{
+    console.log("hello")
+    res.status(200).send({review: review})
+  })
+  .catch((err)=>{
+    console.log(err)
+    next(err);
+  })
+}

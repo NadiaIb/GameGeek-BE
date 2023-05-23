@@ -62,12 +62,29 @@ exports.createComment = (author, body, review_id) => {
     )
     .then((result) => {
       if (!result.rows[0]) {
-        console.log("hello ")
         return Promise.reject({ status: 404, msg: "not found" });
-        } if (body === "") {
-          return Promise.reject({ status: 404, msg: "Missing comment" })
+      }
+      if (body === "") {
+        return Promise.reject({ status: 404, msg: "Missing comment" });
       } else {
         return result.rows[0];
       }
+    });
+};
+
+exports.updateVotes = (review_id, inc_votes) => {
+  return exports.selectReviewId(review_id)
+  .then((review) => {
+      console.log("in models")
+      return connection.query(
+        `UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING *;`,
+        [inc_votes, review_id]
+      );
+    })
+    .then((result) => {
+      if (!result.rows[0]) {
+        return Promise.reject({ status: 404, msg: "not found" });
+      }
+      return result.rows[0];
     });
 };
