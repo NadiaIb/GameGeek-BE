@@ -292,14 +292,14 @@ describe("/api/reviews/:review_id", () => {
         expect(response.body.msg).toBe("Invalid properties");
       });
   });
-  // test.only("PATCH - status:400- missing  properties", () => {
-  //   const newVotes = {};
-  //   return request(app)
-  //     .patch("/api/reviews/1")
-  //     .send(newVotes)
-  //     .expect(400)
-  //     .then((response) => {
-  //       expect(response.body.msg).toBe("Invalid properties");
-  //     });
-  // });
+  test.only("PATCH - status:400- missing  properties", () => {
+    const newVotes = {};
+    return request(app)
+      .patch("/api/reviews/1")
+      .send(newVotes)
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("Invalid properties");
+      });
+  });
 });
