@@ -151,12 +151,12 @@ test("GET -status:404 - valid ID but non-existent review ID", () => {
       expect(response.body.msg).toBe("not found");
     });
 });
-// test("GET -status:200 - valid ID ", () => {
-//   return request(app)
-//     .get("/api/reviews/2/comments")
-//     .expect(404)
-//     .then((response) => {
-//       expect(response.body.comments).toEqual([]);
-//     });
-// });
+test("GET -status:200 - valid ID returns empty array when review has no comments", () => {
+  return request(app)
+    .get("/api/reviews/1/comments")
+    .expect(200)
+    .then((response) => {
+      expect(response.body.comments).toEqual([]);
+    });
+});
 });
