@@ -208,13 +208,98 @@ describe("/api/reviews/:review_id/comments", () => {
         expect(response.body.msg).toBe("Missing comment");
       });
   });
+  test("Post - status: 404 - responds with invalid properties", () => {
+    return request(app)
+      .post("/api/reviews/1/comments")
+      .send({ random: "mallionaire", thing: "Really great!" })
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("Invalid properties");
+      });
+  });
 });
-test("Post - status: 404 - responds with invalid properties", () => {
-  return request(app)
-    .post("/api/reviews/1/comments")
-    .send({ random: "mallionaire", thing: "Really great!" })
-    .expect(404)
-    .then((response) => {
-      expect(response.body.msg).toBe("Invalid properties");
-    });
+
+describe("/api/reviews/:review_id", () => {
+  test("PATCH - status:200 - Increment votes property by given amount", () => {
+    const newVotes = { inc_votes: 2 };
+    return request(app)
+      .patch("/api/reviews/1")
+      .send(newVotes)
+      .expect(200)
+      .then((response) => {
+        expect(response.body.review).toEqual({
+          review_id: 1,
+          title: "Agricola",
+          designer: "Uwe Rosenberg",
+          owner: "mallionaire",
+          review_img_url:
+            "https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?w=700&h=700",
+          review_body: "Farmyard fun!",
+          category: "euro game",
+          created_at: "2021-01-18T10:00:20.514Z",
+          votes: 3,
+        });
+      });
+  });
+  test("PATCH - status:200 - decrement votes property by given amount ", () => {
+    const newVotes = { inc_votes: -3 };
+    return request(app)
+      .patch("/api/reviews/1")
+      .send(newVotes)
+      .expect(200)
+      .then((response) => {
+        expect(response.body.review).toEqual({
+          review_id: 1,
+          title: "Agricola",
+          designer: "Uwe Rosenberg",
+          owner: "mallionaire",
+          review_img_url:
+            "https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?w=700&h=700",
+          review_body: "Farmyard fun!",
+          category: "euro game",
+          created_at: "2021-01-18T10:00:20.514Z",
+          votes: -2,
+        });
+      });
+  });
+  test("PATCH -status: 400 - invalid review ID ", () => {
+    const newVotes = { inc_votes: 1 };
+    return request(app)
+      .patch("/api/reviews/random")
+      .send(newVotes)
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).toBe("Bad Request");
+      });
+  });
+  test("PATCH - status: 404 - valid ID but non-existent review ID", () => {
+    const newVotes = { inc_votes: 1 };
+    return request(app)
+      .patch("/api/reviews/123")
+      .send(newVotes)
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("not found");
+      });
+  });
+  test("PATCH - status:404 - missing value", () => {
+    const newVotes = { random: 1 };
+    return request(app)
+      .patch("/api/reviews/1")
+      .send(newVotes)
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("Invalid properties");
+      });
+  });
+  // test.only("PATCH - status:400- missing  properties", () => {
+  //   const newVotes = {};
+  //   return request(app)
+  //     .patch("/api/reviews/1")
+  //     .send(newVotes)
+  //     .expect(400)
+  //     .then((response) => {
+  //       expect(response.body.msg).toBe("Invalid properties");
+  //     });
+  // });
 });
