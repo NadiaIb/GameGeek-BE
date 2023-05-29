@@ -340,3 +340,24 @@ describe('/api/comments/:comment_id', () => {
     })
   });
 });
+
+describe('/api/users', () => {
+  test('GET - status: 200 - returns array of all user objects', () => {
+    return request(app)
+    .get('/api/users')
+    .expect(200)
+    .then((response)=>{
+      const users = response.body.users
+      expect(users.length).toBe(4)
+      users.forEach((user)=>{
+        expect(user).hasOwnProperty("username");
+        expect(user).hasOwnProperty("name");
+        expect(user).hasOwnProperty("avatar_url");
+        expect(typeof user.username).toBe("string")
+        expect(typeof user.name).toBe("string")
+        expect(typeof user.avatar_url).toBe("string")
+      })
+      })
+  });
+});
+

@@ -32,6 +32,7 @@
       ]
     }
   },
+  
   "GET /api/users": {
     "description": "serves an array of all users",
     "queries": ["order"],
@@ -61,3 +62,4 @@
     }
   }
 }
+

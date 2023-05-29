@@ -1,3 +1,4 @@
+const { response } = require("../app");
 const connection = require("../db/connection");
 const fs = require("fs/promises");
 
@@ -97,3 +98,11 @@ exports.removeComment= (comment_id) =>{
       return {};
     });
   }
+
+exports.selectUsers = () => {
+  return connection
+  .query(`SELECT * FROM users`)
+  .then((result)=>{
+    return result.rows
+  })
+}
