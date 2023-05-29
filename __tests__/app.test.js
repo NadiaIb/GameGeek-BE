@@ -4,6 +4,7 @@ const connection = require("../db/connection");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data");
 const endpoints = require("../endpoints.json");
+const { response } = require("../app");
 
 beforeEach(() => {
   return seed(testData);
@@ -320,6 +321,22 @@ describe('/api/comments/:comment_id', () => {
     .then((response)=>{
       expect(response.body).toEqual({})
       expect(response.status).toBe(204);
+    })
+  });
+  test('DELETE - status:404 - valid but ID but non existent comment ID', () => {
+    return request(app)
+    .delete('/api/comments/20')
+    .expect(404)
+    .then((response)=>{
+      expect(response.body.msg).toBe("not found")
+    })
+  });
+  test('DELETE - status: 400 - invalid comment ID', () => {
+    return request(app)
+    .delete('/api/comments/random')
+    .expect(400)
+    .then((response)=>{
+      expect(response.body.msg).toBe("Bad Request")
     })
   });
 });
