@@ -361,3 +361,118 @@ describe('/api/users', () => {
   });
 });
 
+//queries
+
+// describe.only("/api/reviews?category=:category", () => {
+//   it("200: GET - should return a single review object matching the queried category when passed a valid query if there is only 1 match ", () => {
+//     return request(app)
+//       .get("/api/reviews?category=dexterity")
+//       .expect(200)
+//       .then(({ body }) => {
+//         const review = body.reviews;
+//         expect(review.category).toBe("dexterity");
+//         expect(review).toHaveProperty("review_id", expect.any(Number));
+//         expect(review).toHaveProperty("owner", expect.any(String));
+//         expect(review).toHaveProperty("title", expect.any(String));
+//         expect(review).toHaveProperty("designer", expect.any(String));
+//         expect(review).toHaveProperty("review_img_url", expect.any(String));
+//         expect(review).toHaveProperty("review_body", expect.any(String));
+//         expect(review).toHaveProperty("created_at", expect.any(String));
+//       });
+//   });
+//   it("200: GET - should return an array of review objects matching the queried category when passed a valid query if there are multiple matches", () => {
+//     return request(app)
+//       .get("/api/reviews?category=social deduction")
+//       .expect(200)
+//       .then(({ body }) => {
+//         const reviews = body.reviews;
+//         expect(reviews).toHaveLength(11);
+//         reviews.forEach((review) => {
+//           expect(review.category).toBe("social deduction");
+//           expect(review).toHaveProperty("review_id", expect.any(Number));
+//           expect(review).toHaveProperty("owner", expect.any(String));
+//           expect(review).toHaveProperty("title", expect.any(String));
+//           expect(review).toHaveProperty("designer", expect.any(String));
+//           expect(review).toHaveProperty("review_img_url", expect.any(String));
+//           expect(review).toHaveProperty("review_body", expect.any(String));
+//           expect(review).toHaveProperty("created_at", expect.any(String));
+//         });
+//       });
+//   });
+//   it("200: GET - should return an array of review objects sorted by the passed sort_by query in descending order when a valid query is passed", () => {
+//     return request(app)
+//       .get("/api/reviews?sort_by=votes")
+//       .expect(200)
+//       .then(({ body }) => {
+//         expect(body.reviews).toHaveLength(13);
+//         expect(body.reviews).toBeSorted({
+//           key: "votes",
+//           descending: true,
+//         });
+//       });
+//   });
+//   it("200: GET - should return an array of review objects sorted by the default created_at in ascending order if an order query of asc is passed without a sort_by query", () => {
+//     return request(app)
+//       .get("/api/reviews?order=asc")
+//       .expect(200)
+//       .then(({ body }) => {
+//         expect(body.reviews).toHaveLength(13);
+//         expect(body.reviews).toBeSorted({
+//           key: "created_at",
+//           descening: false,
+//         });
+//       });
+//   });
+//   it("200: GET - should return an array of review objects sorted by the passed sort_by query and in ascending order when passed both an order and sort_by query", () => {
+//     return request(app)
+//       .get("/api/reviews?sort_by=votes&order=asc")
+//       .expect(200)
+//       .then(({ body }) => {
+//         expect(body.reviews).toHaveLength(13);
+//         expect(body.reviews).toBeSorted({
+//           key: "votes",
+//           descending: false,
+//         });
+//       });
+//   });
+//   it("200: GET - should return an empty array if the query property and value are valid but have no results", () => {
+//     return request(app)
+//       .get("/api/reviews?category=children's games")
+//       .expect(200)
+//       .then(({ body }) => {
+//         expect(body.reviews).toEqual([]);
+//       });
+//   });
+//   it("400: GET - should return an error of Invalid query if the query property is invalid", () => {
+//     return request(app)
+//       .get("/api/reviews?not-a-valid-query=votes")
+//       .expect(400)
+//       .then(({ body }) => {
+//         expect(body.msg).toBe("Invalid query");
+//       });
+//   });
+//   it("400: GET - should return an error of Bad Request when passed an invalid sort_by argument", () => {
+//     return request(app)
+//       .get("/api/reviews?sort_by=not-a-valid-input")
+//       .expect(400)
+//       .then(({ body }) => {
+//         expect(body.msg).toBe("Bad Request");
+//       });
+//   });
+//   it("400: GET - should return an error of Bad Request when passed an invalid order argument", () => {
+//     return request(app)
+//       .get("/api/reviews?order=not-a-valid-order")
+//       .expect(400)
+//       .then(({ body }) => {
+//         expect(body.msg).toBe("Bad Request");
+//       });
+//   });
+//   it("404: GET - should return an error of Not found if the query property is valid and its value is in a valid format but does not exist", () => {
+//     return request(app)
+//       .get("/api/reviews?category=valid-but-non-existent")
+//       .expect(404)
+//       .then(({ body }) => {
+//         expect(body.msg).toBe("Not found");
+//       });
+//   });
+// });

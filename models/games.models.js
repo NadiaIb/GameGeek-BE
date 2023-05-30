@@ -19,22 +19,56 @@ exports.selectReviewId = (review_id) => {
     });
 };
 
+// exports.checkAvailableCategories = (queryCat) => {
+//   return selectCategories().then((categories) => {
+//     availableCategories = categories.map((category) => category.slug);
+//     if (queryCat && !availableCategories.includes(queryCat)) {
+//       return promiseRejection(404, "Category does not exist");
+//     }
+//     return queryCat;
+//   });
+// };
+// exports.selectReviews = (category, sort_by = "created_at", order = "desc") => {
+//   const queryParams = [];
+//   let queryString = `
+//     SELECT reviews.owner, reviews.title, reviews.review_id, reviews.category,
+//     reviews.review_img_url, reviews.created_at, reviews.votes, 
+//     reviews.designer, COUNT(comments.comment_id) AS comment_count
+//     FROM reviews
+//     LEFT JOIN comments
+//     ON reviews.review_id = comments.review_id`;
+//   if (category) {
+//     queryString += `
+//     WHERE reviews.category = $1`;
+//     queryParams.push(category);
+//   }
+//   queryString += `
+//     GROUP BY reviews.review_id
+//     ORDER BY reviews.%s `;
+//   queryString += `%s`;
+//   const sql = format(queryString, sort_by, order);
+//   return db.query(sql, queryParams).then((reviews) => {
+//     return checkForContent(reviews, "No reviews for this category");
+//   });
+// };
+
 exports.selectReviews = () => {
   return connection
-    .query(
-      `
-  SELECT reviews.*, COUNT(comments.comment_id) AS comment_count FROM reviews LEFT JOIN comments ON reviews.review_id = comments.review_id GROUP BY reviews.review_id ORDER BY created_at DESC;
-  `
-    )
-    .then((result) => {
-      const outputs = result.rows;
-      outputs.forEach((output) => {
-        delete output.review_body;
-        output.comment_count = parseInt(output.comment_count);
-      });
-      return outputs;
+  .query(
+    `
+SELECT reviews.*, COUNT(comments.comment_id) AS comment_count FROM reviews LEFT JOIN comments ON reviews.review_id = comments.review_id GROUP BY reviews.review_id ORDER BY created_at DESC;
+`
+  )
+  .then((result) => {
+    const outputs = result.rows;
+    outputs.forEach((output) => {
+      delete output.review_body;
+      output.comment_count = parseInt(output.comment_count);
     });
+    return outputs;
+  });
 };
+
 
 exports.selectComments = (review_id) => {
   return exports
