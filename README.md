@@ -24,11 +24,11 @@ Once in the project directory, run the following command to install the required
 npm install
 ```
 
-# Minimum requirements
+## Minimum requirements
 - Node: v19.7.0
 - Postgres: v14.7.0
 
-# Setup .env files
+## Setup .env files
 We have two databases in this project. One for real looking dev data and another for simpler test data.
 
 To run this project locally, you will need test and developement .env files. These .env files are .gitignored, so you will need to create them yourself: 
@@ -57,7 +57,7 @@ This project has been built with:
 - Node-Postgres: Node.js modules for interfacing with a PostgreSQL database
 - pg-format: Node.js implementation of PostgreSQL format() to create dynamic SQL queries
 
-### Testing
+## Testing
 - Jest: JavaScript testing framework
 - Supertest: HTTP assertion library
 
