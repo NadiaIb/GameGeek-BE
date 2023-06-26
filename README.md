@@ -16,7 +16,7 @@ To run this project locally, you will need to fork this repo or fork as follows:
 
 ```
 git clone https://github.com/NadiaIb/GameGeek-BE.git
-cd be-nc-games
+cd GameGeek-BE
 ```
  
 # Setup .env files
