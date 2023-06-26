@@ -8,8 +8,8 @@ You can view the deployed API: [here](https://nc-games-1ybo.onrender.com/api)
 ## Features
 - Select from a range of games.
 - Sort games by number of votes, ascending or descending order, date or comment counts.
-- Upvote or downvote games
-- Comments can be added or deleted
+- Upvote or downvote games.
+- Comments can be added or deleted.
 
 ## Running the project locally
 To run this project locally, you will need to fork this repo or fork as follows:
