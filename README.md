@@ -18,18 +18,32 @@ To run this project locally, you will need to fork this repo or fork as follows:
 git clone https://github.com/NadiaIb/GameGeek-BE.git
 cd GameGeek-BE
 ```
+Once in the project directory, run the following command to install the required dependencies for the project:
+
+```
+npm install
+```
  
 # Setup .env files
 
-You will need to create two .env files to run this project locally: .env.test and .env.development. Into each, add :
+We have two databases in this project. One for real looking dev data and another for simpler test data.
 
+To run this project locally, you will need test and developement .env files. These .env files are .gitignored, so you will need to create them yourself: 
+- .env.test
+- .env.development    
+
+Into each file, add `PGDATABASE=<database_name_here>`, with the correct database name for that environment (see /db/setup.sql for the database names). 
+
+You will then need to create the databases as follows:
+```bash
+npm run setup-dbs
 ```
-PGDATABASE=<database_name_here>
+To seed the development database, run:
+```bash
+npm run seed
 ```
 
-with the correct database name for that environment (see /db/setup.sql for the database names).
-
-Double check that these .env files are .gitignored.
+The test database will automatically re-seed before each individual test.
 
 ## Dependencies
 
